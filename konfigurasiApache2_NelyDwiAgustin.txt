@@ -1,0 +1,19 @@
+<VirtualHost *:3000>
+    ServerAdmin webmaster@localhost
+    DocumentRoot /var/www/html
+
+    ErrorLog ${APACHE_LOG_DIR}/error.log
+    CustomLog ${APACHE_LOG_DIR}/access.log combined
+
+    <Location "/">
+        # Rate limiting configuration
+        SetOutputFilter RATE_LIMIT
+        SetEnv rate-limit-requests 6
+        SetEnv rate-limit-interval 60
+        SetEnv rate-limit-burst 6
+    </Location>
+
+    ProxyPass / http://localhost:8000/
+    ProxyPassReverse / http://localhost:8000/
+</VirtualHost>
+
